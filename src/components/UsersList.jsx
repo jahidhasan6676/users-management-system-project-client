@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-
+import { MdDone, MdOutlineDoneAll } from "react-icons/md";
 
 const UsersList = ({ user, index, users, setUsers }) => {
-    // console.log(user)
-    const { _id, name, email, gender, status } = user;
+ 
+    const { _id, name, email, gender, status, isCompleted } = user;
+  
 
     const handleDeleteUser = id => {
-        console.log(id)
-
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -39,11 +38,34 @@ const UsersList = ({ user, index, users, setUsers }) => {
                         }
                     })
             }
-
-
-
         });
     }
+
+    // access user
+    const handleAccessUser = id => {
+                
+                fetch(`http://localhost:5000/status/${id}`, {
+                    method: "PUT"
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        if (data.modifiedCount > 0) {
+                            Swal.fire({
+                                
+                                text: "Users Accept",
+                                icon: "success"
+                            });
+
+                            // const remaining = users.filter(us => us._id !== id)
+                            // setUsers(remaining)
+                           const newUser = users.map((user) => user._id === id ? {...user, isCompleted:true} : user);
+                           setUsers(newUser);
+                        };
+                    })
+            }
+       
+    
     return (
 
         <>
@@ -59,6 +81,9 @@ const UsersList = ({ user, index, users, setUsers }) => {
                         <button className="btn btn-accent">E</button>
                     </Link>
                     <button onClick={() => handleDeleteUser(_id)} className="btn btn-error">X</button>
+                    <button onClick={()=>handleAccessUser(_id)} className="bg-pink-500 px-4 py-2 rounded text-white">
+                        {isCompleted ? <MdOutlineDoneAll /> : <MdDone />}
+                    </button>
                 </th>
             </tr>
 

@@ -15,7 +15,7 @@ const UpdateUser = () => {
         const status = form.status.value;
       
         const newUsers = {name,email,gender,status};
-        console.log(newUsers);
+        // console.log(newUsers);
         fetch(`http://localhost:5000/users/${data._id}`,{
             method:"PUT",
             headers:{

@@ -11,9 +11,10 @@ const AddNewUser = () => {
         const email = form.email.value;
         const gender = form.gender.value;
         const status = form.status.value;
+        const isCompleted = false;
       
-        const newUsers = {name,email,gender,status};
-        console.log(newUsers);
+        const newUsers = {name,email,gender,status,isCompleted};
+        // console.log(newUsers);
 
         fetch("http://localhost:5000/users",{
             method:"POST",
